@@ -1,0 +1,25 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clinic-deploy
+  labels:
+    myversion: "1"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: clinic-front
+  template:
+    metadata:
+      labels:
+        app: clinic-front
+    spec: # specification du pod
+      imagePullSecrets:
+        - name: ghcr-secret
+      containers:
+        - name: springboot
+          image: ghcr.io/zes/spring-petclinic:latest
+          env:
+            - name: SERVER_SERVLET_CONTEXT_PATH # On force le contexte de l'application à tp6
+              value: "/tp6"
